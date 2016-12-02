@@ -1,0 +1,87 @@
+log log.prod
+
+# ----------------- Init Section with charge 0.4  -----------------
+
+include "q0.in.init"
+
+
+# ----------------- Atom Definition Section -----------------
+
+read_data "data.init"
+
+# ----------------- Settings Section -----------------
+
+include "q0.in.settings"
+
+
+# ----------------- Run Section ----------------
+
+region	 r1  block INF INF INF INF 34.681900 52.138500 
+region   r2  block INF INF INF INF INF       34.681900 
+region	 r3  block INF INF INF INF 52.138500 INF
+
+neigh_modify exclude group Cgraphene Cgraphene
+group mobile subtract all Cgraphene # Only the Cgraphene atoms are immobile.
+group gf dynamic mobile region r1 every 10
+group gw1 dynamic mobile region r2 every 10
+group gw2 dynamic mobile region r3 every 10
+
+restart 20000 res.3 res.4
+dump            2 all xyz 20000 product.xyz
+dump_modify 2 element C C C O H
+# The lines above define the system you want to simulate.
+# What you do next is up to you.
+# Typically a user would minimize and equilibrate
+# the system using commands similar to the following:
+#  ----   examples   ----
+#
+#  -- minimize --
+#minimize 1.0e-5 1.0e-7 1000 10000
+#timestep 0.01
+#fix fxlan mobile langevin 1.0 1.0 100.0 48279
+#fix fxnve mobile nve   # <-- needed by fix langevin (see lammps documentation)
+#fix fxnvt mobile nvt temp 1.0 1.0 100
+#thermo 1000
+#run 250000
+#unfix fxnvt
+#unfix fxlan
+#unfix fxnve
+#fix fShakeSPCE spce shake 0.0001 10 100 b 1 a 1
+# (Note: Some fixes, for example "shake", interfere with the minimize command,
+#        You can use the "unfix" command to disable them before minimization.)
+#  -- declare time step for normal MD --
+
+timestep 1.0
+thermo_style    custom step temp pe etotal press vol epair #ebond eangle edihed
+thermo          1000  # time interval for printing out "thermo" data
+#  -- run at constant pressure (Nose-Hoover)--
+#fix   fxnpt mobile npt temp 1.0 300.0 100.0 iso 1.0 1.0 1000.0 drag 1.0
+#run 100000
+#unfix fxnpt
+#fix   fxnpt mobile npt temp 300.0 300.0 100.0 iso 1.0 1.0 1000.0 drag 1.0
+#run 100000
+#unfix fxnpt
+#  -- ALTERNATELY, run at constant volume (Nose-Hoover) --
+
+fix   fxnvt mobile nvt temp 300.0 300.0 100.0 tchain 1
+fix fg1 mobile gravity 0.1 vector 0 0 1
+run 500000
+unfix fxnvt
+#  -- ALTERNATELY, run at constant volume using Langevin dynamics. --
+#  -- (This is good for sparse CG polymers in implicit solvent.)   --
+#  -- Now, finally run the simulation --
+
+fix fxLAN1 gw1 langevin 300.0 300.0 100 16100801
+fix fxLAN2 gw2 langevin 300.0 300.0 100 16100802
+fix fg1 mobile gravity 0.1 vector 0 0 1
+fix fxNVE mobile nve  #(<--needed by fix langevin)
+compute c1 mobile chunk/atom bin/1d z lower 1.0
+compute c2 mobile property/atom vx vy vz fx fy fz
+fix fd1 mobile ave/chunk 1 1000 1000 c1 c_c2[1] c_c2[2] c_c2[3] c_c2[4] c_c2[5] c_c2[6] file VF
+
+timestep 1.0
+thermo_style    custom step temp pe etotal press vol epair f_fxLAN1 f_fxLAN2 #ebond eangle edihed
+thermo          1000  # time interval for printing out "thermo" data
+run   1000000
+#  ---- (end of examples) ----
+write_data data.prod
