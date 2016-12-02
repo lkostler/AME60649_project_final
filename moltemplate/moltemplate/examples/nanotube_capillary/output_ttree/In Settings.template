@@ -1,0 +1,22 @@
+    #              i       j                             epsilon     sigma
+    pair_coeff  @/atom:Graphene/C @/atom:Graphene/C  lj/cut/coul/long       0.068443     3.407
+    
+    # These Lennard-Jones parameters come from
+    #  R. Saito, R. Matsuo, T. Kimura, G. Dresselhaus, M.S. Dresselhaus,
+    #  Chem Phys Lett, 348:187 (2001)
+
+    # Define a group consisting of only carbon atoms in graphene molecules
+    group Cgraphene type @/atom:Graphene/C
+    bond_coeff   @/bond:SPCE/OH         harmonic           1000.0  1.0 
+    angle_coeff  @/angle:SPCE/HOH       harmonic           1000.0  109.47
+    pair_coeff   @/atom:SPCE/O @/atom:SPCE/O  lj/cut/coul/long   0.1553  3.166 
+    pair_coeff   @/atom:SPCE/H @/atom:SPCE/H  lj/cut/coul/long   0.0     2.058
+    group spce type  @/atom:SPCE/O  @/atom:SPCE/H
+    fix fShakeSPCE spce shake 0.0001 10 100 b @/bond:SPCE/OH a @/angle:SPCE/HOH
+    # (Remember to "unfix" fShakeSPCE during minimization.)
+  # --- We must eventually specify the interactions between the atoms ---
+  # --- in different molecule types (graphene-water interactions).    ---
+  # (See Laurent Joly, J. Chem. Phys. 135(21):214705 (2011) for details
+
+  pair_coeff @/atom:Graphene/C @/atom:SPCE/O lj/cut/coul/long 0.114 3.28
+  pair_coeff @/atom:Graphene/C @/atom:SPCE/H lj/cut/coul/long 0.0   3.28
