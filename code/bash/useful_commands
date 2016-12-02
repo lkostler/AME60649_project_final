@@ -1,0 +1,18 @@
+#Useful qsub commands
+
+#resources:
+https://hpcc.usc.edu/support/documentation/useful-pbs-commands/ 
+http://wiki.crc.nd.edu/wiki/index.php/Submitting_Batch/UGE_jobs
+
+
+#submit a job which is in submit.h
+qsub submit.sh
+
+#delete
+qdel job_identifier
+
+#stat (change user name)
+qstat -u lkostler 
+
+#quota
+myquota

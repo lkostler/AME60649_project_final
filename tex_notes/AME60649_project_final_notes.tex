@@ -1,0 +1,189 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Template Lukas Koestler
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[oneside,12pt,a4paper,fleqn]{article}
+
+\newcommand{\Author}{Lukas K\"ostler}
+\newcommand{\Supervisor}{Prof.\@ Nicholas Zabaras}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% packages
+\usepackage{color}
+\usepackage{placeins}
+\usepackage{fancyhdr}
+\usepackage{mdwlist}
+\usepackage{listings}
+\usepackage{scrextend}
+%\usepackage{dsfont}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{ifthen}
+\usepackage{hyperref}
+\usepackage[all]{hypcap}        % needed to help hyperlinks direct correctly;
+\usepackage{siunitx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[style=authoryear,citestyle=authoryear,natbib=true,backend=bibtex]{biblatex}
+\bibliography{/Users/Lukas/GD/lk/Tex/sources/sources.bib}
+\usepackage{multicol}
+\usepackage{epstopdf}
+\epstopdfsetup{update} % only regenerate pdf files when eps file is newer
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CODE:
+\lstset{language=bash,columns=fullflexible, basicstyle=\ttfamily,xleftmargin=-2.5cm,frame=lr,framesep=8pt,framerule=0pt}
+
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+% watch out: normally listings shouln'd be used inside newcommand: http://tex.stackexchange.com/questions/29971/why-can-lstlisting-not-be-saved-in-a-command
+\newcommand{\bash}[1]{%
+\begin{lstlisting}[language=bash]^^J
+#1^^J
+\end{lstlisting}
+}
+\newcommand{\bbash}[2]{%
+	\begin{lstlisting}[language=bash]^^J
+	#1^^J
+	#2^^J
+	\end{lstlisting}
+}
+\newcommand{\bbbash}[3]{%
+	\begin{lstlisting}[language=bash]^^J
+	#1^^J
+	#2^^J
+	#3^^J
+	\end{lstlisting}
+}
+\newcommand{\bbbbash}[4]{%
+	\begin{lstlisting}[language=bash]^^J
+	#1^^J
+	#2^^J
+	#3^^J
+	#4^^J
+	\end{lstlisting}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Convinience Macros
+\newcommand{\futureGraphics}[1]{\textbf{Here graphics: #1 will be included}}
+\newcommand{\comment}[1]{ }
+
+\newcommand\blfootnote[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%My Math Definitions
+
+%functions
+\newcommand{\fun}[2]{\mathrm{#1} \left( #2\right)}
+
+\newcommand{\f}[1]{\fun{f}{#1}}
+
+\renewcommand{\exp}[1]{\fun{exp}{#1}}
+\renewcommand{\cos}[1]{\fun{cos}{#1}}
+\renewcommand{\sin}[1]{\fun{sin}{#1}}
+\newcommand{\sigmoid}[1]{\fun{\sigma}{#1}}
+
+
+%sets
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbf{N}}
+
+
+%general
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\newcommand{\mbeq}{\overset{!}{=}}
+
+\newcommand{\tsum}{{\textstyle\sum\limits}}    
+
+\newcommand{\abs}[1]{\left|  #1 \right|}            
+
+%probability theory
+\newcommand{\p}[1]{P\left( #1 \right)}
+\newcommand{\pcond}[2]{P\left( #1 | #2\right)}
+
+\newcommand{\E}[1]{E \left[ #1 \right]}
+\newcommand{\Econd}[2]{E \left[ #1 | #2\right]}
+\newcommand{\Ewrt}[2]{E_{#2} \left[ #1 \right]}
+\newcommand{\Econdwrt}[3]{E_{#3} \left[ #1 | #2\right]}
+
+\newcommand{\distributed}{\sim}
+
+\newcommand{\normpdf}[3]{\fun{\mathcal{N}}{#1 | #2, #3 }}
+\newcommand{\normdist}[2]{\fun{\mathcal{N}}{#1, \, #2 }}
+
+\newcommand{\gammadist}[2]{\fun{\text{gamma}}{#1, \, #2 }}
+
+%vector matrix
+\newcommand{\norm}[2][2]{\left\lVert #2 \right\rVert_{#1}}
+
+\newcommand{\trace}[1]{\fun{tr}{#1}}
+
+\newcommand{\eye}{I}
+
+
+% dertivatives
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\pd}{\partial} 
+\newcommand{\td}{\mathrm{D}}   
+
+\newcommand{\dfor}[1]{\frac{\dd}{\dd\mathrm{#1}}}
+
+\newcommand{\pfrac}[2]{\frac{\pd #1}{\pd #2}}   % \pfrac{f(x,y)}{x} for partial derivative of f(x,y) with respect to x
+\renewcommand{\dfrac}[2]{\frac{\dd #1}{\dd #2}} % \dfrac{f(x,y)}{x} for total derivative of f(x,y) with respect to x
+\newcommand{\grad}{\nabla}                      % for the gradient
+
+\newcommand{\angstrom}{\textup{\AA}}
+
+% source of all figures
+\graphicspath{{./figures/}}
+% You can define more folders by inserting  {./additionalPath/}.
+    
+    \title{AME60649: Final Project\blfootnote{The git repository for this project can be found at \url{https://gitlab.com/lkostler/AME60649_project_final.git}. Please feel free to contact me with any questions, comments, requests for collaboration etc.. I really like to talk about the subject :)!}\\{\large Simulation of gravity-driven water flow in Graphene micro-channels}}
+    \author{\Author\thanks{\href{mailto:lkskstlr@gmail.com}{lkskstlr@gmail.com}}}
+    \date{December 13, 2016}
+    
+    \begin{document}
+    	\maketitle 
+    	 
+    	\section{Project Description}
+    	
+
+    \end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

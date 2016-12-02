@@ -1,0 +1,96 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      2377,         86]
+NotebookOptionsPosition[      1981,         68]
+NotebookOutlinePosition[      2335,         84]
+CellTagsIndexPosition[      2292,         81]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"ClearAll", "[", "\"\<Global`*\>\"", "]"}]], "Input",
+ CellChangeTimes->{{3.689536145630822*^9, 3.689536154242346*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"v", "[", "x_", "]"}], ":=", 
+  RowBox[{"Sqrt", "[", 
+   RowBox[{"v0", " ", "-", " ", 
+    RowBox[{"Ah", " ", 
+     RowBox[{"Sin", "[", 
+      RowBox[{"w", " ", "x"}], "]"}]}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.689536160368351*^9, 3.6895361826602917`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{"1", "/", 
+    RowBox[{"v", "[", "x", "]"}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x", ",", "0", ",", 
+     RowBox[{"2", "*", 
+      RowBox[{"Pi", "/", "w"}]}]}], "}"}]}], "]"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"DSolve", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{"x", "''"}], "[", "t", "]"}], " ", "==", " ", 
+      RowBox[{
+       RowBox[{"-", "A"}], "*", "w", "*", 
+       RowBox[{
+        RowBox[{"Cos", "[", 
+         RowBox[{"w", "*", 
+          RowBox[{"x", "[", "t", "]"}]}], "]"}], "/", "m"}]}]}], " ", ",", 
+     RowBox[{
+      RowBox[{"x", "[", "0", "]"}], "\[Equal]", "0"}], ",", " ", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"x", "'"}], "[", "0", "]"}], "=", "v0"}]}], "}"}], ",", 
+   RowBox[{"x", "[", "t", "]"}], ",", "t"}], "]"}]], "Input"],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.689536225316689*^9, 3.6895362385969057`*^9}}]
+},
+WindowSize->{808, 911},
+WindowMargins->{{Automatic, 87}, {Automatic, 79}},
+FrontEndVersion->"11.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (July 28, \
+2016)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 142, 2, 32, "Input"],
+Cell[703, 24, 299, 8, 32, "Input"],
+Cell[1005, 34, 252, 8, 32, "Input"],
+Cell[1260, 44, 620, 19, 32, "Input"],
+Cell[1883, 65, 94, 1, 32, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)
+
