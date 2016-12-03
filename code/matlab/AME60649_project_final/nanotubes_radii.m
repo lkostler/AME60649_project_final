@@ -1,7 +1,7 @@
 %AME60649: Nanotube radii selection
 
-clear all;
-close all;
+%clear all;
+%close all;
 
 %% general
 d = 1.42; %carbon bond length
@@ -26,5 +26,4 @@ R= @(N) (W/4)./tan((2*pi)./(4*N));
 
 NN = [10, 12, 14, 16, 20, 25, 50, 100, 200, 255];
 
-NN
-R(NN)
+[NN; R(NN)]

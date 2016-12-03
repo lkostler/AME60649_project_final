@@ -65,10 +65,11 @@ fix fxLAN2 gw2 langevin 300.0 300.0 100 16100802									#ID=fxLAN1, water in ou
 fix fg1 mobile gravity 0.1 vector 0 0 1												#why again? probably unnecessary
 fix fxNVE mobile nve  																#(<--needed by fix langevin) to do the actual time integration
 compute c1 mobile chunk/atom bin/1d z lower 1.0										#starts at the lower end of the box and separates the whole volume into chunks of length 1. Only for mobile=water. ID = c1
-compute cCyl inTube chunk/atom bin/cylinder z lower 1 0 0 0 5.5						# cylinder along z, starting at the lower end, deltaz = 1, x=y=0 of the cylinder axis, rmin = 0, rmax = 5.5, nbin=55 --> dr = (5.5-0)/55 = 0.1
+compute cCyl1 inTube chunk/atom bin/cylinder z lower 1 0 0 0 5.5	55					# cylinder along z, starting at the lower end, deltaz = 1, x=y=0 of the cylinder axis, rmin = 0, rmax = 5.5, nbin=55 --> dr = (5.5-0)/55 = 0.1
 compute c2 mobile property/atom vx vy vz fx fy fz									#stores vx vy vz etc. in c2
+compute cCyl2 inTube property/atom vx vy vz fx fy fz	
 fix fd1 mobile ave/chunk 1 1000 1000 c1 c_c2[1] c_c2[2] c_c2[3] c_c2[4] c_c2[5] c_c2[6] file VF #writes the chunk avergaes (over 1000 timesteps every 1000 timesteps) to a file
-fix fd2 inTube ave/chunk 1 1000 1000 cCyl 1 c_c2[1] c_c2[2] c_c2[3] c_c2[4] c_c2[5] c_c2[6] file RadialVF #writes the chunk avergaes (over 1000 timesteps every 1000 timesteps) to a file
+fix fd2 inTube ave/chunk 1 1000 1000 cCyl1 c_cCyl2[1] c_cCyl2[2] c_cCyl2[3] c_cCyl2[4] c_cCyl2[5] c_cCyl2[6] file RadialVF #writes the chunk avergaes (over 1000 timesteps every 1000 timesteps) to a file
 
 timestep 1.0
 thermo_style    custom step temp pe etotal press vol epair f_fxLAN1 f_fxLAN2 #ebond eangle edihed
