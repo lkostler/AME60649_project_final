@@ -1,0 +1,30 @@
+#File created by Lukas Koestler on the basis of the moltemplate example. For further information visit: https://github.com/lkostler/AME60649_project_final.
+
+
+# This is a small version of a carbon-nanotube, water capillary system.  It was
+# inspired by this paper: Laurent Joly, J. Chem. Phys. 135(21):214705 (2011)
+
+import "graphene_walls.lt"
+
+import "nanotube.lt"
+
+import "water_box.lt"
+
+# ------------ boundary conditions ------------
+
+write_once("Data Boundary") {
+ -2.130000e+01 2.130000e+01  xlo xhi
+ -2.582488e+01 2.582488e+01  ylo yhi
+ -3.195000e+01 9.585000e+01  zlo zhi
+}
+
+# ---------------------------------------------
+
+write_once("In Settings") {
+  # --- We must eventually specify the interactions between the atoms ---
+  # --- in different molecule types (graphene-water interactions).    ---
+  # (See Laurent Joly, J. Chem. Phys. 135(21):214705 (2011) for details
+
+ pair_coeff @atom:Graphene/C @atom:SPCE/O lj/cut/coul/long 0.114 3.28
+ pair_coeff @atom:Graphene/C @atom:SPCE/H lj/cut/coul/long 0.0   3.28
+}

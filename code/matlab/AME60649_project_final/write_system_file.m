@@ -7,7 +7,7 @@ end
 fileID = fopen(strcat(path, 'system.lt'), 'w');
 
 %% write file
-fprintf(fileID, 'File created by Lukas Koestler on the basis of the moltemplate example. For further information visit: https://github.com/lkostler/AME60649_project_final.\n\n\n');
+fprintf(fileID, '#File created by Lukas Koestler on the basis of the moltemplate example. For further information visit: https://github.com/lkostler/AME60649_project_final.\n\n\n');
 fprintf(fileID, '# This is a small version of a carbon-nanotube, water capillary system.  It was\n');
 fprintf(fileID, '# inspired by this paper: Laurent Joly, J. Chem. Phys. 135(21):214705 (2011)\n\n');
 

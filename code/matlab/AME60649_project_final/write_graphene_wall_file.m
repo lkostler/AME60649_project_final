@@ -21,7 +21,7 @@ move_x = -(Nx*W + Ny*W/2)/2;
 
 
 %% write file
-fprintf(fileID, 'File created by Lukas Koestler on the basis of the moltemplate example. For further information visit: https://github.com/lkostler/AME60649_project_final.\n\n\n');
+fprintf(fileID, '#File created by Lukas Koestler on the basis of the moltemplate example. For further information visit: https://github.com/lkostler/AME60649_project_final.\n\n\n');
 fprintf(fileID, 'import "graphene.lt"\n\n');
 fprintf(fileID, '# Notes:\n');
 fprintf(fileID, '#    Hexagonal lattice with:\n');

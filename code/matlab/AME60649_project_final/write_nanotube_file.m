@@ -14,7 +14,7 @@ R= @(N) (W/4)./tan((2*pi)./(4*N));
 Radius = R(NR);
 
 %% write file
-fprintf(fileID, 'File created by Lukas Koestler on the basis of the moltemplate example. For further information visit: https://github.com/lkostler/AME60649_project_final.\n\n\n');
+fprintf(fileID, '#File created by Lukas Koestler on the basis of the moltemplate example. For further information visit: https://github.com/lkostler/AME60649_project_final.\n\n\n');
 fprintf(fileID, 'import "graphene.lt"\n\n');
 fprintf(fileID, '# The "Graphene" unit cell defined in "graphene.lt" lies in the XY plane.\n');
 fprintf(fileID, '# In the next line, we will create a new version of the graphene unit cell\n');

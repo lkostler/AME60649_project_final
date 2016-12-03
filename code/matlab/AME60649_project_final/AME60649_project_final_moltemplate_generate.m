@@ -13,8 +13,8 @@ w = 1.5*d; %width of hexagon rows
 
 %% Formulas: 
 R = @(NR) (W/4)./tan((2*pi)./(4*NR));
-NL = @(NR) ceil(10*R(NR) / (1.5*d));
-L = @(NR) NL(NR)*1.5*d;
+NL = @(NR) ceil(10*R(NR) / (1.5*d))+1;
+L = @(NR) (NL(NR)-1)*1.5*d;
 Ny = @(NR) ceil(  8*R(NR)/W  );
 Lx = @(NR) (Ny(NR)-1)*w;
 Ly = @(NR) Ny(NR)*W;
@@ -26,13 +26,19 @@ NNR = [10, 12, 14, 16, 20, 25, 50, 100];
 masterID = fopen(strcat(folderpath, 'masterFile.txt'), 'w');
 fprintf(masterID, 'Format:\nID\tNR\tNL\tNy\tR\t\tL\t\tLx\t\tLy\n');
 
-
+flag = true;
 for i = 1:length(NNR)
     NR = NNR(i);
     foldername = sprintf('alpha%02i_NR_%04i_NL_%04i', i, NR, NL(NR));
     
     %delte existing
-    rmdir(strcat(folderpath, foldername), 's');
+    if exist(strcat(folderpath, foldername), 'dir')
+        if flag
+            warning('Folder %s already exists. Will be deleted', strcat(folderpath, foldername));
+            flag = false;
+        end
+        rmdir(strcat(folderpath, foldername), 's');
+    end
     
     %master file
     fprintf(masterID, '%02i\t%04i\t%04i\t%04i\t%d\t%d\t%d\t%d\n', i, NR, NL(NR), Ny(NR), R(NR), L(NR), Lx(NR), Ly(NR));
