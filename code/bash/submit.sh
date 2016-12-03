@@ -1,6 +1,5 @@
 #!/bin/csh
-#$ -m abe
-#$ -N cntq0
+#$ -N test02
 #$ -pe smp 2
 #$ -q long
 
