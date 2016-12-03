@@ -32,7 +32,7 @@ for i = 1:length(NNR)
     foldername = sprintf('alpha%02i_NR_%04i_NL_%04i', i, NR, NL(NR));
     
     %delte existing
-    rmdir(strcat(folderpath, foldername), 's');
+    rmdir(
     
     %master file
     fprintf(masterID, '%02i\t%04i\t%04i\t%04i\t%d\t%d\t%d\t%d\n', i, NR, NL(NR), Ny(NR), R(NR), L(NR), Lx(NR), Ly(NR));

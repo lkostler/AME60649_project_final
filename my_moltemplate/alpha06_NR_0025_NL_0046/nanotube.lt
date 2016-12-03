@@ -1,0 +1,25 @@
+File created by Lukas Koestler on the basis of the moltemplate example. For further information visit: https://github.com/lkostler/AME60649_project_final.
+
+
+import "graphene.lt"
+
+# The "Graphene" unit cell defined in "graphene.lt" lies in the XY plane.
+# In the next line, we will create a new version of the graphene unit cell
+# which lies in the XZ plane, by rotating Graphene 90 degrees around the X axis:
+
+GrapheneXZ = Graphene.rot(90,1,0,0)
+
+# ------------------ nanotube ---------------
+
+# Now use this to build a simple ("zigzag") nanotube where the long-axis of each
+# hexagon is aligned with the tube axis (along the Z direction).  If the 
+# cicumference of a "zigzag" nanotube contains N hexagons, then the radius of 
+# the tube, R=(W/4)/tan((2*pi)/(4*N)), where W=2*d*sqrt(3)/2, and d = the carbon
+# bond length.  If N=14 and d=1.42 Ansgroms then R=5.457193512764 Angstroms
+# In the Joly 2011 paper, the tube radii varied between 5.14 and 18.7 Angstroms.
+
+
+nanotube = new GrapheneXZ.move(0, 9.773207e+00, 0)                         # 9.7732 = R
+                  [25].rot(1.440000e+01,0,0,1)                             # 14.400000=360/25
+                  [46].rot(7.200000e+00,0,0,1).move(0, 0, 2.13)            # 7.200000=180/25
+                                                                           # 2.13= d*1.5

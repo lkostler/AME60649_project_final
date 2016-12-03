@@ -1,0 +1,20 @@
+Format:
+ID	NR	NL	Ny	R		L		Lx		Ly
+01	0010	0019	0013	3.882187e+00	4.047000e+01	2.556000e+01	3.197366e+01
+02	0012	0022	0016	4.670462e+00	4.686000e+01	3.195000e+01	3.935219e+01
+03	0014	0026	0018	5.457194e+00	5.538000e+01	3.621000e+01	4.427122e+01
+04	0016	0030	0021	6.242961e+00	6.390000e+01	4.260000e+01	5.164976e+01
+05	0020	0037	0026	7.812766e+00	7.881000e+01	5.325000e+01	6.394732e+01
+06	0025	0046	0032	9.773207e+00	9.798000e+01	6.603000e+01	7.870439e+01
+07	0050	0092	0064	1.956574e+01	1.959600e+02	1.341900e+02	1.574088e+02
+08	0100	0184	0128	3.914113e+01	3.919200e+02	2.705100e+02	3.148176e+02
+
+
+ID:	Unique Identification Number
+NR:	Number of unit cells in the Radius of the nanotube
+NL:	Number of unit cells in the Length of the nanotube
+Ny:	Number of unit cells in the y-direction of the grephene sheet. Nx = Ny-1
+R:	Radius of the Nanotube
+L:	Length of the Nanotube. z is in [-1/2L, 1.5L] and the nanotube starts at z=0 and goes to z = L.
+Lx:	Length of the graphene sheets (and simulation box) in x-direction
+Ly:	Length of the graphene sheets (and simulation box) in y-direction

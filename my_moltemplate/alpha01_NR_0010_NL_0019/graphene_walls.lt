@@ -1,0 +1,36 @@
+File created by Lukas Koestler on the basis of the moltemplate example. For further information visit: https://github.com/lkostler/AME60649_project_final.
+
+
+import "graphene.lt"
+
+# Notes:
+#    Hexagonal lattice with:
+# d = length of each hexagonal side  = 1.42 Angstroms
+# L = length of each hexagon = 2*d   = 2.84 Angstroms
+# W =  width of each hexagon = 2*d*sqrt(3)/2 = 2.4595121467478 Angstroms
+# w =  width of hexagon rows = 1.5*d = 2.13 Angstroms
+
+Wall {
+	unitcells = new Graphene [13].move(1.2297560733739, 2.13, 0)
+	                         [12].move(2.4595121467478,   0,  0)
+
+	unitcells[*][*].move(-2.275049e+01, -1.384500e+01, 0.000)
+
+	# Now cut a hole in the graphene sheet roughly where the nanotube is located:
+	delete unitcells[5][6]/C2
+	delete unitcells[5][7]
+	delete unitcells[6][5]/C2
+	delete unitcells[6][6]
+	delete unitcells[6][7]
+	delete unitcells[7][5]
+	delete unitcells[7][6]
+	delete unitcells[7][7]/C1
+	delete unitcells[8][5]
+	delete unitcells[8][6]/C1
+
+}
+
+# Make two copies of the wall, and place them on either end of the nanotube
+
+wall1 = new Wall.move(0, 0, 0.0)
+wall2 = new Wall.move(0, 0, 4.047000e+01)
