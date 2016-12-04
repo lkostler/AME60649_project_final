@@ -13,8 +13,8 @@ import "water_box.lt"
 # ------------ boundary conditions ------------
 
 write_once("Data Boundary") {
- -2.130000e+01 2.130000e+01  xlo xhi
- -2.582488e+01 2.582488e+01  ylo yhi
+ -2.582488e+01 2.582488e+01  xlo xhi
+ -2.343000e+01 2.343000e+01  ylo yhi
  -3.195000e+01 9.585000e+01  zlo zhi
 }
 

@@ -35,8 +35,9 @@ for j = 1:Ny
 end
 
 %% Walls
-move_y = -Ny*w/2;
-move_x = -(Nx*W + Ny*W/2)/2;
+move_y = -Ny*w/2 + w/2;
+% move_x = -(Nx*W + Ny*W/2)/2;
+move_x = -(3/4*Ny-1)*W; 
 
 X(1,:) = X(1,:) + move_x;
 X(2,:) = X(2,:) + move_y;

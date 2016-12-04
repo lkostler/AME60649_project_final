@@ -1,0 +1,7 @@
+36.21 44.27122 110.76
+pbc set {36.21 44.27122 110.76} -all
+pbc box -center origin -shiftcenter {0 0 2.769000e+01} 
+
+# sample command https://jacobdurrant.com/2014/05/27/creating-a-periodic-box-programmatically-in-vmd-with-an-explicit-center/
+pbc set {1308.998 1278.998 1281.998} -all -molid top
+pbc box -center origin -shiftcenter {-13.5 -19.5 6.0}

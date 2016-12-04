@@ -1,5 +1,5 @@
 #!/bin/csh
-#$ -N test02
+#$ -N test03
 #$ -pe smp 2
 #$ -q long
 

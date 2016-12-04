@@ -11,32 +11,34 @@ import "graphene.lt"
 # w =  width of hexagon rows = 1.5*d = 2.13 Angstroms
 
 Wall {
-	unitcells = new Graphene [16].move(1.2297560733739, 2.13, 0)
-	                         [15].move(2.4595121467478,   0,  0)
+	unitcells = new Graphene [18].move(1.2297560733739, 2.13, 0)
+	                         [17].move(2.4595121467478,   0,  0)
 
-	unitcells[*][*].move(-2.828439e+01, -1.704000e+01, 0.000)
+	unitcells[*][*].move(-3.074390e+01, -1.810500e+01, 0.000)
 
 	# Now cut a hole in the graphene sheet roughly where the nanotube is located:
-	delete unitcells[6][8]/C2
-	delete unitcells[6][9]
-	delete unitcells[7][6]/C2
-	delete unitcells[7][7]
+	delete unitcells[6][9]/C2
 	delete unitcells[7][8]
 	delete unitcells[7][9]
-	delete unitcells[8][6]
+	delete unitcells[7][10]
 	delete unitcells[8][7]
 	delete unitcells[8][8]
 	delete unitcells[8][9]
-	delete unitcells[9][6]
+	delete unitcells[8][10]
+	delete unitcells[9][6]/C2
 	delete unitcells[9][7]
 	delete unitcells[9][8]
-	delete unitcells[9][9]/C1
-	delete unitcells[10][6]
-	delete unitcells[10][7]/C1
+	delete unitcells[9][9]
+	delete unitcells[9][10]/C1
+	delete unitcells[10][6]/C2
+	delete unitcells[10][7]
+	delete unitcells[10][8]
+	delete unitcells[10][9]/C1
+	delete unitcells[11][7]/C1
 
 }
 
 # Make two copies of the wall, and place them on either end of the nanotube
 
 wall1 = new Wall.move(0, 0, 0.0)
-wall2 = new Wall.move(0, 0, 4.686000e+01)
+wall2 = new Wall.move(0, 0, 4.828000e+01)

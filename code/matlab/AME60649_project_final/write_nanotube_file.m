@@ -1,4 +1,4 @@
-function write_nanotube_file(NR, NL, path)
+function Natoms = write_nanotube_file(NR, NL, path)
 %WRITE_GRAPHENE_WALL_FILE Summary of this function goes here
 %   Detailed explanation goes here
 if nargin < 3
@@ -35,8 +35,10 @@ fprintf(fileID, '# In the Joly 2011 paper, the tube radii varied between 5.14 an
 
 fprintf(fileID, 'nanotube = new GrapheneXZ.move(0, %d, 0)                         # %0.4f = R\n', Radius, Radius);
 fprintf(fileID, '                  [%i].rot(%d,0,0,1)                             # %04f=360/%i\n', NR, 360/NR, 360/NR, NR);
-fprintf(fileID, '                  [%i].rot(%d,0,0,1).move(0, 0, 2.13)            # %04f=180/%i\n', NL, 180/NR, 180/NR,NR);
+fprintf(fileID, '                  [%i].rot(%d,0,0,1).move(0, 0, 2.13)            # %04f=180/%i\n', NL, 180/NR, 180/NR, NR);
 fprintf(fileID, '                                                                           # 2.13= d*1.5\n');
+
+Natoms = NR*NL*2;
 end
 
 

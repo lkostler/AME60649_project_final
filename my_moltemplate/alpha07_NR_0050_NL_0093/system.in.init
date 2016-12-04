@@ -1,4 +1,0 @@
-    # -- Default styles (used in this file for graphene carbon) --
-    units       real
-    atom_style  full   #(full enables you to to add other molecules later)
-    pair_style  hybrid  lj/cut/coul/long  10.0

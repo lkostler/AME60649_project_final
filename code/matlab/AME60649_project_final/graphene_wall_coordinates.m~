@@ -25,7 +25,7 @@ X = nan(4, N);
 
 for j = 1:Ny
     for i = 1:Nx
-        X(:, (j-1)*Ny+i) = [...
+        X(:, (j-1)*Nx+i) = [...
             (i-1)*dx_x+(j-1)*dx_y;...
             (i-1)*dy_x+(j-1)*dy_y;....
             (i-1)*dx_x+(j-1)*dx_y;...
@@ -36,9 +36,11 @@ end
 
 %% Walls
 move_y = -Ny*w/2;
-move_x = -(Nx*W + Ny*W/2)/2;
+% move_x = -(Nx*W + Ny*W/2)/2;
 
 X(1,:) = X(1,:) + move_x;
-
+X(2,:) = X(2,:) + move_y;
+X(3,:) = X(3,:) + move_x;
+X(4,:) = X(4,:) + move_y;
 end
 
