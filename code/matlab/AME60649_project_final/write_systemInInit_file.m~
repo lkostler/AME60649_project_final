@@ -1,0 +1,22 @@
+function write_systemInInit_file(path)
+%WRITE_SYSTEMININIT_FILE Summary of this function goes here
+%   Detailed explanation goes here
+
+fileID = fopen(strcat(path, 'submit.s'), 'w');
+
+fprintf(fileID, 'pair_style  hybrid  lj/cut/coul/long  9.0\n');
+fprintf(fileID, 'pair_style  hybrid  lj/cut/coul/long  9.0\n');
+fprintf(fileID, '# -- Default styles (for solo "SPCE" water) --\n');
+fprintf(fileID, 'units        real\n');
+fprintf(fileID, 'atom_style   full\n');
+fprintf(fileID, '# (Hybrid force fields were not necessary but are used for portability.)\n');
+fprintf(fileID, 'pair_style   hybrid lj/cut/coul/long 8.5\n');
+fprintf(fileID, 'bond_style   hybrid harmonic\n');
+fprintf(fileID, 'angle_style  hybrid harmonic\n');
+fprintf(fileID, 'kspace_style pppm 0.0001\n');
+fprintf(fileID, 'pair_modify  mix arithmetic\n');
+
+
+
+end
+

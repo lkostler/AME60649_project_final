@@ -1,4 +1,4 @@
-function write_water_box(Lx, Ly, Ltube, path)
+function Nwater = write_water_box(Lx, Ly, Ltube, path)
 %WRITE_WATER_BOX Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -10,11 +10,14 @@ end
 fileID = fopen(strcat(path, 'water_box.lt'), 'w');
 
 
+%% gra
+
 %% density calculator
 %R = Ltube/10
 coeff = (Lx*Ly+pi*(Ltube/10)^2) / (Lx*Ly); %correction factor because the tube is not filled by water
 
-rho = coeff * 0.99699 * 1e6; %in g/m^3 at about 300K
+% rho = coeff * 0.99699 * 1e6; %in g/m^3 at about 300K
+rho = 0.8 * 0.99699 * 1e6; %use smaller rho because atoms too close
 M = 18.01528; %in g/mol
 NA = 6.022*1e23; %number/mol
 sigma = nthroot(M/(rho*NA), 3); %distance between two molecules
@@ -23,11 +26,13 @@ sigma_Angstrom = sigma*1e10; %in Angstrom
 
 nx = floor(Lx/sigma_Angstrom);
 ny = floor(Ly/sigma_Angstrom);
-nz = floor(Ltube/sigma_Angstrom);
+nz = floor((Ltube-d)/sigma_Angstrom);
 
-Lx_water = nx*sigma_Angstrom;
-Ly_water = ny*sigma_Angstrom;
-Lz_water = nz*sigma_Angstrom;
+Nwater = nx*ny*nz*3; %3 atoms per water
+
+Lx_water = (nx-1)*sigma_Angstrom;
+Ly_water = (ny-1)*sigma_Angstrom;
+Lz_water = (nz-1)*sigma_Angstrom;
 
 %% write file
 fprintf(fileID, '#File created by Lukas Koestler on the basis of the moltemplate example. For further information visit: https://github.com/lkostler/AME60649_project_final.\n\n\n');
@@ -44,7 +49,7 @@ fprintf(fileID, '                  [%i].move(   %d,    0,   0)\n', nx, sigma_Ang
 
 fprintf(fileID, '\n# Optional: Center the water box at the origin. (Not really necessary.)\n\n');
 
-fprintf(fileID, 'wat[*][*][*].move(%d, -14.90985, 11.47)\n\n');
+fprintf(fileID, 'wat[*][*][*].move(%d, %d, %d)\n\n', -Lx_water/2, -Ly_water/2, -(Ltube-Lz_water)/2);
 
 fprintf(fileID, '# --------------- Note: -----------------\n');
 fprintf(fileID, '# The spacing between water molecules does not matter much as long as it is\n');

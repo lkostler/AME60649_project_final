@@ -10,6 +10,9 @@ end
 fileID = fopen(strcat(path, 'water_box.lt'), 'w');
 
 
+%% graphene
+d = 1.42; %carbon bond length
+
 %% density calculator
 %R = Ltube/10
 coeff = (Lx*Ly+pi*(Ltube/10)^2) / (Lx*Ly); %correction factor because the tube is not filled by water
@@ -24,7 +27,7 @@ sigma_Angstrom = sigma*1e10; %in Angstrom
 
 nx = floor(Lx/sigma_Angstrom);
 ny = floor(Ly/sigma_Angstrom);
-nz = floor(Ltube/sigma_Angstrom);
+nz = floor((Ltube-d)/sigma_Angstrom); %minus d is a dirty hack
 
 Nwater = nx*ny*nz*3; %3 atoms per water
 
@@ -47,7 +50,7 @@ fprintf(fileID, '                  [%i].move(   %d,    0,   0)\n', nx, sigma_Ang
 
 fprintf(fileID, '\n# Optional: Center the water box at the origin. (Not really necessary.)\n\n');
 
-fprintf(fileID, 'wat[*][*][*].move(%d, %d, %d)\n\n', -Lx_water/2, -Ly_water/2, -(Ltube-Lz_water)/2);
+fprintf(fileID, 'wat[*][*][*].move(%d, %d, %d)\n\n', -Lx_water/2, -Ly_water/2, -(Ltube-d-Lz_water)/2);
 
 fprintf(fileID, '# --------------- Note: -----------------\n');
 fprintf(fileID, '# The spacing between water molecules does not matter much as long as it is\n');

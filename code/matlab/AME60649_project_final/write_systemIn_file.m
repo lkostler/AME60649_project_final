@@ -3,14 +3,14 @@ function write_systemIn_file(Ltube, R, Ntotal, timesteps, path)
 %   Detailed explanation goes here
 
 %% open file
-if nargin <4
+if nargin < 5
     path = '/Users/Lukas/GD/lk/phd_courses/fall_2016/AME60649/project_final/my_moltemplate/';
 end
 
 fileID = fopen(strcat(path, 'system.in'), 'w');
 
 %% dumpfreq
-NsingleAtomsDump = 1e6;
+NsingleAtomsDump = 2*1e7; %this should be a file of about 1e6 * 0.00005406817937 MB
 Ndumps = ceil(NsingleAtomsDump/Ntotal);
 DumpFreq = ceil(timesteps/Ndumps);
 

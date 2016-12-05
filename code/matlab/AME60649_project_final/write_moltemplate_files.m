@@ -4,6 +4,7 @@ clear all;
 close all;
 
 folderpath = '/Users/Lukas/GD/lk/phd_courses/fall_2016/AME60649/project_final/my_moltemplate/';
+base_string = 'beta';
 
 flag_moltemplate = true;
 flag_check = true;
@@ -11,6 +12,9 @@ flag_plot3d = true;
 
 timesteps = 1e5;
 
+% NNR = [10, 12, 14, 16, 20, 25, 50, 100];
+% NNR = [10, 12, 14, 16, 20];
+NNR = [100];
 %% parameters
 d = 1.42; %carbon bond length
 W=2*d*sqrt(3)/2; % width of hexagon
@@ -29,19 +33,26 @@ dy = 2*0.355;
 
 
 % NNR = [10, 12, 14, 16, 20, 25, 50, 100];
-NNR = [10, 12, 14, 16, 20];
+% NNR = [10, 12, 14, 16, 20];
+
 
 NNwater = nan(size(NNR));
 NNwalls = nan(size(NNR));
 NNtube = nan(size(NNR));
+
+foldernames = cell(size(NNR));
+
 %% write files
 masterID = fopen(strcat(folderpath, 'masterFile.txt'), 'w');
 fprintf(masterID, 'Experiments:\nID\tNR\tNL\tNy\tR\t\tL\t\tLx\t\tLy\n');
 
 flag = true;
+fprintf('Writing Moltemplate files     : ');
 for i = 1:length(NNR)
+    fprintf('.');
     NR = NNR(i);
-    foldername = sprintf('alpha%02i_NR_%04i_NL_%04i', i, NR, NL(NR));
+    foldername = sprintf('%s%02i_NR_%04i_NL_%04i',base_string,  i, NR, NL(NR));
+    foldernames{i} = foldername;
     
     %delte existing
     if exist(strcat(folderpath, foldername), 'dir')
@@ -86,12 +97,16 @@ fprintf(masterID, 'Lx:\tLength of the graphene sheets (and simulation box) in x-
 fprintf(masterID, 'Ly:\tLength of the graphene sheets (and simulation box) in y-direction\n');
 
 
+% fprintf('Writing Moltemplate files     : ');
+fprintf('\n');
+fprintf('Execute Moltemplate in folders: ');
 %% execute moltemplater
 if flag_moltemplate
     for i = 1:length(NNR)
+        fprintf('.');
         NR = NNR(i);
         
-        foldername = sprintf('alpha%02i_NR_%04i_NL_%04i', i, NR, NL(NR));
+        foldername = sprintf('%s%02i_NR_%04i_NL_%04i',base_string,  i, NR, NL(NR));
         path_loc = strcat(folderpath, foldername);
         %the shell (system) command must be one big command
         command = ['cd ', path_loc, ';'];
@@ -108,14 +123,20 @@ if flag_moltemplate
         write_systemIn_file(L(NR), R(NR), NNwalls(i) + NNtube(i) + NNwater(i), timesteps, strcat(path_loc, '/'))
     end
 end
+fprintf('\n');
 
 
 %% 
+
 if flag_check
+%     fprintf('Writing Moltemplate files     : ');
+    fprintf('Checking Geometry             : ');
     for i = 1:length(NNR)
+        fprintf('.');
+        
         NR = NNR(i);
         
-        foldername = sprintf('alpha%02i_NR_%04i_NL_%04i', i, NR, NL(NR));
+        foldername = sprintf('%s%02i_NR_%04i_NL_%04i',base_string,  i, NR, NL(NR));
         path_loc = strcat(folderpath, foldername);
         
         %load data
@@ -126,7 +147,7 @@ if flag_check
         Y = data(indc,6);
         
         %plot
-        [X,Y] = map_coordinates(X, Y, Lx(NR), Ly(NR));
+        [X,Y] = map_coordinates(X, Y, Lx(NR), Ly(NR), true);
         
         %% 3d plot
         if flag_plot3d
@@ -138,6 +159,46 @@ if flag_check
         end
     end
 end
+fprintf('\n');
+
+%% clean directory and create additonal files
+for i = 1:length(NNR)
+    NR = NNR(i);
+    
+    foldername = sprintf('%s%02i_NR_%04i_NL_%04i',base_string,  i, NR, NL(NR));
+    path_loc = strcat(folderpath, foldername);
+    
+    
+    %remove files
+    command = ['cd ', path_loc, ';'];
+    command = strcat(command, 'rm -r output_ttree');
+    [~, ~] = system(command);
+    
+    command = ['cd ', path_loc, ';'];
+    command = strcat(command, 'rm graphene_walls.lt');
+    [~, ~] = system(command);
+    
+    command = ['cd ', path_loc, ';'];
+    command = strcat(command, 'rm nanotube.lt');
+    [~, ~] = system(command);
+    
+    command = ['cd ', path_loc, ';'];
+    command = strcat(command, 'rm system.lt');
+    [~, ~] = system(command);
+    
+    command = ['cd ', path_loc, ';'];
+    command = strcat(command, 'rm water_box.lt');
+    [~, ~] = system(command);
+    
+    
+    %overwrite other lammps files
+    write_systemInInit_file(strcat(path_loc, '/'));
+    write_systemInSettings_file(strcat(path_loc, '/'));
+    write_submit_file(foldername, strcat(path_loc, '/'));
+end
 
 
 
+
+%% master submit file
+writesubmitMaster_file(folderpath, foldernames);

@@ -1,0 +1,70 @@
+#File created by Lukas Koestler on the basis of the moltemplate example. For further information visit: https://github.com/lkostler/AME60649_project_final.
+
+
+log log.prod
+
+# units are set to real
+# -----------------Load files  -----------------
+
+include "system.in.init" #just reads and executes the file line by line
+read_data "system.data"
+include "system.in.settings"
+
+
+
+# ----------------- Setup/Groups ----------------
+
+#box is specified in system.data
+
+region	 r1  block INF INF INF INF 5    4.186000e+01 	#most of the tube (except the ends 5Angstrom)
+region  r2  block INF INF INF INF INF   5 	#part with the water
+region	 r3  block INF INF INF INF 4.186000e+01  INF 		#upper part
+
+neigh_modify exclude group Cgraphene Cgraphene 										#excludes all the C-C connections from the neighbor list ==> force is not computed
+neigh_modify every 1
+
+group mobile subtract all Cgraphene 												# A group with all atoms except the Cgraphene ones (i.e. the water molecules)
+group gf dynamic mobile region r1 every 10 											#creates a group called gf. This group is dynamic (the atoms in it change all the time). It includes all atoms in the region r1 (middle of the tube) and is updated every 10 timesteps
+
+group gw1 dynamic mobile region r2 every 10 										# all water in the reservoir
+group gw2 dynamic mobile region r3 every 10 										# all water in the outlet
+group inTube dynamic mobile region r1 every 1										# water in tube
+
+
+
+
+# ----------------- Dumps ----------------
+# N atomes = 6864
+restart 20000 res.3 res.4 						#writes a restart file every 20000 timesteps. It switches between the two files periodically.
+dump            2 all xyz 35 product.xyz 		#ID=2, all atoms, xyz file, every 20000 timesteps, filename
+dump_modify 2 element C O H 					#ID=2 (so modify the dump above), writes the element types s.t. it is a propper .xyz file
+thermo_style    custom step temp pe etotal press vol epair #ebond eangle edihed		#print thermodynamic data. style=custom, pe=total potential energy, etotal = pe+ke, epair = pairwise energy (evdwl + ecoul + elong)
+thermo          10  																# time interval for printing out "thermo" data
+
+timestep 1.0																		#1.0 femtoseconds
+
+
+# ----------------- NVT Equilibration ----------------
+fix   fxnvt mobile nvt temp 300.0 300.0 100.0 tchain 1								#ID=fxnvt, group-ID=mobile=water, nvt=canonical, Tstart=300K, Tstop=300K, takes about Tdamp=100 steps to get from 300K to 300K,  tchain (just use 1)
+fix fg1 mobile gravity 0.1 vector 0 0 1												#ID=fg1, group-ID=mobile=water, magnitude=0.1(force per mass) (this actually adds an acceleration) (Kcal/(grams*Angstrom))
+
+run  10000																			#Xingfei had 50,000 here
+unfix fxnvt																			#Delete the thermostate
+# ----------------- NVT Production ----------------
+#Use a Thermostat only for reservoir and outlet, not tube
+fix fxLAN1 gw1 langevin 300.0 300.0 100 16100801									#ID=fxLAN1, water in reservoir, keeps temp at 300K, 100 damping, seed
+fix fxLAN2 gw2 langevin 300.0 300.0 100 16100802									#ID=fxLAN1, water in outlet, keeps temp at 300K, 100 damping, seed
+fix fg1 mobile gravity 0.1 vector 0 0 1												#why again? probably unnecessary
+fix fxNVE mobile nve  																#(<--needed by fix langevin) to do the actual time integration
+compute c1 mobile chunk/atom bin/1d z lower 1.0										#starts at the lower end of the box and separates the whole volume into chunks of length 1. Only for mobile=water. ID = c1
+compute cCyl1 mobile chunk/atom bin/cylinder z lower 1 0 0 0 4.670462e+00	100					# cylinder along z, starting at the lower end, deltaz = 1, x=y=0 of the cylinder axis, rmin = 0, rmax = R, nbin=100 --> 
+compute c2 mobile property/atom vx vy vz fx fy fz									#stores vx vy vz etc. in c2
+compute cCyl2 mobile property/atom vx vy vz fx fy fz	
+fix fd1 mobile ave/chunk 1 1000 1000 c1 c_c2[1] c_c2[2] c_c2[3] c_c2[4] c_c2[5] c_c2[6] file VF #writes the chunk avergaes (over 1000 timesteps every 1000 timesteps) to a file
+fix fd2 mobile ave/chunk 1 1000 1000 cCyl1 c_cCyl2[1] c_cCyl2[2] c_cCyl2[3] c_cCyl2[4] c_cCyl2[5] c_cCyl2[6] file RadialVF #writes the chunk avergaes (over 1000 timesteps every 1000 timesteps) to a file
+
+run 100000
+
+
+#  ----------------- Write data ----------------
+write_data data.prod
